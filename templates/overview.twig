@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" type="text/css" href="./semantic/dist/semantic.min.css">
+    <link rel="stylesheet" href="./assets/css/main.css">
+
+    <title>Dota 2 Auto Chess</title>
+</head>
+<body>
+
+<header>
+</header>
+
+
+<div class="ui grid">
+    <aside class="three wide column">
+        <div class="sticky-sidebar">
+            <div class="sixteen wide column">
+                <h2>Dota 2 Auto Chess</h2>
+                <div id="filterOptionsDropdown" class="ui fluid dropdown button">
+                    Add Filter Option
+                    <div class="menu">
+                        <div class="item" data-value="race">Race</div>
+                        <div class="item" data-value="class">Class</div>
+                        <div class="item" data-value="rarity">Rarity</div>
+                        <div class="item" data-value="cost">Cost</div>
+                    </div>
+                </div>
+                <ul id="filterOptions">
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <main class="thirteen wide column">
+        {#<div class="ui grid chess-pieces-list">#}
+        {#{% for cols in chessPieces|batch((chessPieces|length)/2,'no item') %}#}
+        {#<div class="eight wide column">#}
+        {#<table class="ui table">#}
+        {#<thead>#}
+        {#<tr>#}
+        {#<th>Name</th>#}
+        {#<th>Race</th>#}
+        {#<th>Class</th>#}
+        {#<th>Cost</th>#}
+        {#</tr>#}
+        {#</thead>#}
+        {#<tbody>#}
+        {#{% for piece in cols %}#}
+        {#<tr class="chess-piece-row"#}
+        {#data-name="{{ piece.name|lower|replace({' ':'-'}) }}"#}
+        {#data-rarity="{{ piece.rarity|lower|replace({' ':'-'}) }}"#}
+        {#data-race="{% for race in piece.getRace() %}{{ race|lower|replace({' ':'-'}) }},{% endfor %}"#}
+        {#data-class="{{ piece.class|lower|replace({' ':'-'}) }}"#}
+        {#data-cost="{{ piece.cost }}">#}
+        {#<td class="rarity-{{ piece.rarity|lower|replace({' ':'-'}) }}"><a#}
+        {#href="#">{{ piece.name }}</a></td>#}
+        {#<td>#}
+        {#{% for race in piece.getRace() %}#}
+        {#<span class="race-{{ race|lower|replace({' ':'-'}) }}">{{ race }}</span>&ensp;#}
+        {#{% endfor %}#}
+        {#</td>#}
+        {#<td class="class-{{ piece.class|lower|replace({' ':'-'}) }}">{{ piece.class }}</td>#}
+        {#<td>{{ piece.cost }}</td>#}
+        {#</tr>#}
+        {#{% endfor %}#}
+        {#</tbody>#}
+        {#</table>#}
+        {#</div>#}
+        {#{% endfor %}#}
+        {#</div>#}
+
+        <div class="chess-pieces-cards ui grid">
+            {% for piece in chessPieces %}
+            <div class="four wide column">
+                <div class="chess-piece-card"
+                     data-name="{{ piece.name|lower|replace({' ':'-'}) }}"
+                     data-rarity="{{ piece.rarity|lower|replace({' ':'-'}) }}"
+                     data-race="{% for race in piece.getRace() %}{{ race|lower|replace({' ':'-'}) }},{% endfor %}"
+                     data-class="{{ piece.class|lower|replace({' ':'-'}) }}"
+                     data-cost="{{ piece.cost }}">
+                    <p class="name rarity-{{ piece.rarity|lower|replace({' ':'-'}) }}">{{ piece.name }}</p>
+                    <p>
+                        {% for race in piece.getRace() %}
+                        <div>
+                            <span class="ui class-popup-parent race race-{{ race|lower|replace({' ':'-'}) }}">{{ race }}</span>
+                            <div class="ui special popup inverted fluid small">
+                                <div class="header">{{ race }} Race Bonus</div>
+                                <div class="content">
+                                {% for rBonus in raceBonus[race]|keys %}
+                                    <p>{% if rBonus > 0 %}{{ rBonus }}&ensp;:&ensp;{% endif %}{{ raceBonus[race][rBonus]|raw }}</p>
+                                {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </p>
+            <p class="ui class-popup-parent class class-{{ piece.class|lower|replace({' ':'-'}) }}">
+                {{ piece.class }}
+            </p>
+            <div class="ui special popup inverted fluid small">
+                <div class="header">{{ piece.class }} Class Bonus</div>
+                <div class="content">
+                    {% for cBonus in classBonus[piece.class]|keys %}
+                        <p>
+                            {% if cBonus > 0 %}{{ cBonus }}&ensp;:&ensp;{% endif %}{{ classBonus[piece.class][cBonus]|raw }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <p class="cost">Cost: {{ piece.cost }}</p>
+        </div>
+</div>
+{% endfor %}
+</div>
+</main>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+
+<script src="./semantic/dist/semantic.min.js"></script>
+
+<script src="./assets/js/main.js"></script>
+</body>
+</html>

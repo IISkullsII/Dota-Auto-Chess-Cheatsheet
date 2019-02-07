@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="./Semantic/semantic.min.css">
+    <link rel="stylesheet" href="./assets/css/main.css">
+
+    <title>Dota 2 Auto Chess</title>
+</head>
+<body>
+
+<header>
+    <div class="row">
+        <div class="col-md-2">
+            <h2>Dota 2 Auto Chess</h2>
+        </div>
+        <div class="col-md-10">
+            <button class="btn btn-list btn-primary active">List</button>
+            <button class="btn btn-cards btn-primary">Cards</button>
+        </div>
+    </div>
+</header>
+
+<div class="row">
+
+    <aside class="col-md-2">
+        <div class="row">
+            <div class="col-12">
+                <div class="ui fluid search selection dropdown">
+                    <input type="hidden" name="country">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Select Country</div>
+                    <div class="menu">
+                        <div class="item" data-value="af"><i class="af flag"></i>Afghanistan</div>
+                        <div class="item" data-value="ax"><i class="ax flag"></i>Aland Islands</div>
+                        <div class="item" data-value="al"><i class="al flag"></i>Albania</div>
+                        <div class="item" data-value="dz"><i class="dz flag"></i>Algeria</div>
+                        <div class="item" data-value="as"><i class="as flag"></i>American Samoa</div>
+                        <div class="item" data-value="ad"><i class="ad flag"></i>Andorra</div>
+                        <div class="item" data-value="ao"><i class="ao flag"></i>Angola</div>
+                        <div class="item" data-value="ai"><i class="ai flag"></i>Anguilla</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <ul id="filterOptions">
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <main class="col-md-10">
+        <div class="row chess-pieces-list">
+            {% for cols in chessPieces|batch((chessPieces|length)/2,'no item') %}
+                <div class="col-md-12 col-lg-6">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Race</th>
+                            <th>Class</th>
+                            <th>Cost</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for piece in cols %}
+                            <tr class="chess-piece-row"
+                                data-name="{{ piece.name|lower|replace({' ':'-'}) }}"
+                                data-rarity="{{ piece.rarity|lower|replace({' ':'-'}) }}"
+                                data-race="{% for race in piece.getRace() %}{{ race|lower|replace({' ':'-'}) }},{% endfor %}"
+                                data-class="{{ piece.class|lower|replace({' ':'-'}) }}"
+                                data-cost="{{ piece.cost }}">
+                                <td class="rarity-{{ piece.rarity|lower|replace({' ':'-'}) }}"><a
+                                            href="#">{{ piece.name }}</a></td>
+                                <td>
+                                    {% for race in piece.getRace() %}
+                                        <span class="race-{{ race|lower|replace({' ':'-'}) }}">{{ race }}</span>&ensp;
+                                    {% endfor %}
+                                </td>
+                                <td class="class-{{ piece.class|lower|replace({' ':'-'}) }}">{{ piece.class }}</td>
+                                <td>{{ piece.cost }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="chess-pieces-cards d-flex flex-wrap hiddenList">
+            {% for piece in chessPieces %}
+                <div class="p-2 chess-piece-card"
+                     data-name="{{ piece.name|lower|replace({' ':'-'}) }}"
+                     data-rarity="{{ piece.rarity|lower|replace({' ':'-'}) }}"
+                     data-race="{% for race in piece.getRace() %}{{ race|lower|replace({' ':'-'}) }},{% endfor %}"
+                     data-class="{{ piece.class|lower|replace({' ':'-'}) }}"
+                     data-cost="{{ piece.cost }}">
+                    <p class="name rarity-{{ piece.rarity|lower|replace({' ':'-'}) }}">{{ piece.name }}</p>
+                    <p>
+                        {% for race in piece.getRace() %}
+                            <span class="race race-{{ race|lower|replace({' ':'-'}) }}">{{ race }}</span>&ensp;
+                        {% endfor %}
+                    </p>
+                    <p class="class class-{{ piece.class|lower|replace({' ':'-'}) }}">{{ piece.class }}</p>
+                    <p class="cost">Cost: {{ piece.cost }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+<script src="./Semantic/semantic.min.js"></script>
+
+<script src="./assets/js/main.js"></script>
+</body>
+</html>
